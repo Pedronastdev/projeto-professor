@@ -1,18 +1,21 @@
 {
-  "name": "projeto",
+  "name": "projeto-professor",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "projeto professor/aluno",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "projeto"
+    "url": "git+https://github.com/Pedronastdev/projeto.git"
   },
-  "author": "pedronastdev",
+  "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pedronastdev/projeto/issues"
+  },
+  "homepage": "https://github.com/Pedronastdev/projeto#readme",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
