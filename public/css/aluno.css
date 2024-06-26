@@ -1,0 +1,303 @@
+* {
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+}
+.row {
+  width: 100%;
+  display: flex;
+}
+.col-1 {
+  width: 8.33%;
+}
+.col-2 {
+  width: 16.66%;
+}
+.col-3 {
+  width: 25%;
+}
+.col-4 {
+  width: 33.33%;
+}
+.col-5 {
+  width: 41.66%;
+}
+.col-6 {
+  width: 50%;
+}
+.col-7 {
+  width: 58.33%;
+}
+.col-8 {
+  width: 66.66%;
+}
+.col-9 {
+  width: 75%;
+}
+.col-10 {
+  width: 83.33%;
+}
+.col-11 {
+  width: 91.66%;
+}
+.col-12 {
+  width: 100%;
+}
+.principal {
+  width: 1440px;
+  height: 1018px;
+  margin: 120px;
+}
+.title {
+  font-family: Monofett;
+  font-size: 70px;
+  font-weight: 400;
+  line-height: 62px;
+  margin-left: 182px;
+}
+.paragraph {
+  font-family: Inter;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 27px;
+  letter-spacing: -0.05em;
+  margin-left: 180px;
+  color: rgba(102, 102, 102, 1);
+}
+.input-text {
+  margin-left: 155px;
+  width: 615px;
+  height: 57px;
+  border-radius: 5px;
+  color: rgba(213, 215, 220, 1);
+  border-style: solid;
+  border-color: rgba(213, 215, 220, 1);
+  padding: 16px;
+}
+.btn {
+  margin-left: 171px;
+}
+button {
+  font-family: Inter;
+  margin-top: 25px;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18px;
+  letter-spacing: -0.02em;
+  color: rgba(99, 99, 99, 1);
+  background-color: rgba(254, 231, 116, 1);
+  width: 145px;
+  height: 50px;
+  border-radius: 20px;
+  border: none;
+  padding: 10px;
+  margin-left: 14px;
+}
+.list {
+  font-family: Inter;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 27px;
+  letter-spacing: -0.02em;
+  margin-left: 168px;
+  margin-top: 62px;
+}
+.new-student {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0em;
+  color: rgba(255, 255, 255, 1);
+  margin-top: 55px;
+}
+.img-aluno{
+  width: 629px;
+  height: 538px;
+  margin-top: 40px;
+  margin-left: 37px;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 1094px;
+  height: 773px;
+  border-radius: 10px;
+  background: transparent #fefefe;
+}
+label {
+  display: block;
+  font-size: 13px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  margin-left: 35px;
+  margin-top: 14px;
+  padding: 10px;
+  font-weight: bold;
+  color: black;
+}
+h2 {
+    font-size: 40px;
+    font-family: "Plus Jakarta Sans";
+    color: rgb(24, 30, 75);
+    margin-left: 37px;
+    margin-top: 62px;
+    line-height: 37.8px;
+    font-weight: 800;
+}
+.close {
+    width: 60px;
+    height: 62px;
+    color: #ffffff;
+    float: right;
+    font-size: 55px;
+    font-weight: bold;
+    background-color: #f90000;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 2;
+}
+.close:hover,
+.close:focus {
+  text-decoration: none;
+  cursor: pointer;
+  transition: 1s;
+}
+input[type="text"],
+input[type="number"] {
+  width: 310px;
+  background: #ffffff;
+  border: 1px solid #d1d1d1;
+  margin-bottom: 0px;
+  height: 45px;
+  margin-left: 40px;
+  display: block;
+}
+.clear-float {
+  clear: both;
+  margin-top: 110px;
+}
+button[type="submit"] {
+  width: 310px;
+  height: 45px;
+  padding: 15px 20px;
+  background-color:#FEE774;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  margin-top: 59px;
+  cursor: pointer;
+  margin-left: 40px;
+}
+.center {
+  text-align: center;
+}
+button.new-student {
+  text-align: center;
+  background-color: rgba(0, 176, 135, 1);
+}
+#img-aluno {
+  width: 349px;
+  height: 300px;
+}
+.custom-table-container {
+  width: 100%;
+  margin-top: 20px; /* Espaço superior */
+  overflow-x: auto; /* Habilita rolagem horizontal se necessário */
+  display: flex;
+  justify-content: center; /* Centraliza a tabela horizontalmente */
+  align-items: center;    /* Centraliza a tabela verticalmente */
+}
+
+.custom-table-container {
+  width: 100%;
+  margin-top: 20px; /* Espaço superior */
+  overflow-x: auto; /* Habilita rolagem horizontal se necessário */
+  display: flex;
+  justify-content: center; /* Centraliza a tabela horizontalmente */
+  align-items: center;    /* Centraliza a tabela verticalmente */
+}
+
+.custom-table-container {
+  width: 100%;
+  margin-top: 20px; /* Espaço superior */
+  overflow-x: auto; /* Habilita rolagem horizontal se necessário */
+  display: flex;
+  justify-content: center; /* Centraliza a tabela horizontalmente */
+  align-items: center; /* Centraliza a tabela verticalmente */
+}
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: transparent;
+}
+
+.custom-table th {
+  padding: 5px;
+  text-align: center;
+  color: #888;
+  border-bottom: 1px solid #ccc;
+  margin-left: 10px; /* Margem à esquerda para os títulos das colunas */
+}
+
+.custom-table td {
+  padding: 5px 45px;
+  text-align: center;
+  border-bottom: 1px solid #ccc;
+  color: black;
+}
+
+.custom-table td.actions {
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-table td.actions button {
+  margin-left: 5px;
+}
+
+.btn-action {
+  width: 125px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+.btn-edit {
+  background-color: #06f087;
+  color: #fff;
+}
+
+.btn-edit-notes {
+  background-color: #007bff; /* Azul */
+  color: #fff;
+}
+
+.btn-delete {
+  background-color: #dc3545; /* Vermelho */
+  color: #fff;
+}
+
+.btn-action:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Cor de fundo ao passar o mouse */
+}
