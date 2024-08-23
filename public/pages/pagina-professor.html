@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
   <meta charset="UTF-8" />
@@ -30,22 +30,27 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <form action="">
-              <label for="">
-                <label for=""></label>
-                <input type="" id="" name="" placeholder="Nome" class="input-text" />
-                <label for=""></label>
-                <input type="" id="" name="" placeholder="Materia" class="input-text" />
+
+            <form onsubmit="return false">
+
+              <label>
+                <label></label>
+                <input type="" id="nomeProfessor" name="Nome" placeholder="Nome" class="input-text" />
+                <label></label>
+                <input type="" id="materia" name="Materia" placeholder="Materia" class="input-text"/>
               </label>
+
             </form>
+
             <div class="btn">
-              <button onclick="buscar()">Buscar</button>
-              <button onclick="novo()">Novo</button>
-              <button onclick="atualizar()">Atualizar</button>
-              <button onclick="excluir()">Excluir</button>
+              <button onclick="handleAction('buscar')">Buscar</button>
+              <button onclick="handleAction('novo')">Novo</button>
+              <button onclick="handleAction('atualizar')">Atualizar</button>
+              <button onclick="handleAction('excluir')">Excluir</button>
             </div>
 
             <div id="resultado"></div>
+            
           </div>
         </div>
         <div class="row">
@@ -162,7 +167,6 @@
                       </tr>
                   </thead>
                   <tbody id="alunos-table-body">
-                      <!-- Aqui serão adicionadas as linhas dinamicamente -->
                   </tbody>
               </table>
           </div>
