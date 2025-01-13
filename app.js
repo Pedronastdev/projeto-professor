@@ -28,6 +28,7 @@ app.use('/img', express.static(path.join(__dirname, 'public', 'img')));
 const rotaAluno = require('./routes/aluno');
 const rotaTeacher = require('./routes/teacher');
 
+
 app.use('/aluno', rotaAluno);
 app.use('/professor', rotaTeacher);
 
@@ -36,7 +37,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-
+// Página de cadastro de professor
 app.get('/pagina-professor.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'pages', 'pagina-professor.html'));
 });

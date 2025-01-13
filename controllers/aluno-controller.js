@@ -19,7 +19,7 @@ exports.getAlunos = async (req, res, next) => {
                     idade: aluno.idade,
                     request: {
                         tipo: 'GET',
-                        descricao: 'Retorna todos todos os alunos'
+                        descricao: 'Retorna todos os alunos'
                     }
                 };
             })
@@ -35,33 +35,63 @@ exports.getAlunos = async (req, res, next) => {
 
 exports.postAluno = async (req, res, next) => {
     try {
-        const query = `INSERT INTO aluno (nome, bimestre1, bimestre2, bimestre3, bimestre4, id_professor, serie, idade) VALUES (?,?,?,?,?,?,?,?)`;
+        console.log("Dados recebidos no backend:", req.body);
+
+        // Validação dos campos
+        const { nome, bimestre1, bimestre2, bimestre3, bimestre4, id_professor, serie, idade } = req.body;
+
+        let erros = [];
+        if (!nome) erros.push('O campo "nome" é obrigatório.');
+        if (!serie || serie < 1 || serie > 9) erros.push('O campo "serie" deve estar entre 1 e 9.');
+        if (isNaN(bimestre1) || bimestre1 < 0 || bimestre1 > 10) erros.push('O campo "bimestre1" deve estar entre 0 e 10.');
+        if (isNaN(bimestre2) || bimestre2 < 0 || bimestre2 > 10) erros.push('O campo "bimestre2" deve estar entre 0 e 10.');
+        if (isNaN(bimestre3) || bimestre3 < 0 || bimestre3 > 10) erros.push('O campo "bimestre3" deve estar entre 0 e 10.');
+        if (isNaN(bimestre4) || bimestre4 < 0 || bimestre4 > 10) erros.push('O campo "bimestre4" deve estar entre 0 e 10.');
+        if (isNaN(idade) || idade < 1 || idade > 100) erros.push('O campo "idade" deve estar entre 1 e 100.');
+        if (!id_professor) erros.push('O campo "id_professor" é obrigatório.');
+
+        if (erros.length > 0) {
+            return res.status(400).send({ mensagem: 'Erros de validação.', erros });
+        }
+
+        // Calculando a média
+        const media = parseFloat(
+            ((parseFloat(bimestre1) + parseFloat(bimestre2) + parseFloat(bimestre3) + parseFloat(bimestre4)) / 4).toFixed(2)
+        );
+
+        // Inserção no banco
+        const query = `
+            INSERT INTO aluno (nome, bimestre1, bimestre2, bimestre3, bimestre4, id_professor, serie, idade, media) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
         const result = await mysql.execute(query, [
-            req.body.nome,
-            req.body.bimestre1,
-            req.body.bimestre2,
-            req.body.bimestre3,
-            req.body.bimestre4,
-            req.body.id_professor,
-            req.body.serie,
-            req.body.idade
+            nome,
+            bimestre1,
+            bimestre2,
+            bimestre3,
+            bimestre4,
+            id_professor,
+            serie,
+            idade,
+            media
         ]);
-          
 
+        console.log('Aluno inserido com sucesso, ID:', result.insertId);
 
+        // Construção da resposta
         const response = {
             mensagem: 'Aluno criado com sucesso',
-
             alunoCriado: {
                 id_aluno: result.insertId,
-                nome: req.body.nome,
-                bimestre1: req.body.bimestre1,
-                bimestre2: req.body.bimestre2,
-                bimestre3: req.body.bimestre3,
-                bimestre4: req.body.bimestre4,
-                id_professor: req.body.id_professor, 
-                serie: req.body.serie,
-                idade: req.body.idade,
+                nome,
+                bimestre1,
+                bimestre2,
+                bimestre3,
+                bimestre4,
+                id_professor,
+                serie,
+                idade,
+                media,
                 request: {
                     tipo: 'POST',
                     descricao: 'Insere um aluno'
@@ -72,9 +102,12 @@ exports.postAluno = async (req, res, next) => {
         return res.status(201).send(response);
 
     } catch (error) {
-        return res.status(500).send({ error: error });
+        console.error('Erro ao inserir aluno:', error);
+        return res.status(500).send({ error: error.message || error });
     }
 };
+
+
 
 
 exports.getUmAluno = async(req, res, next) => {

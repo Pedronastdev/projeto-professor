@@ -7,173 +7,192 @@ async function handleAction(action) {
   const materia = materiaInput.value.trim();
 
   try {
-      let response;
+    let response; // Mover a declaração da variável response para fora do switch
 
-      switch (action) {
-        case "buscar":
-          if (!nome || !materia) {
-              resultado.innerHTML = `
-                  <p class="message error message-animate">Por favor, preencha os campos de nome e matéria.</p>
-              `;
-              return;
-          }
+    switch (action) {
+      case "buscar":
+        // Corrigir: A variável 'response' não pode ser redeclarada
+        response = await fetch(
+          `/professor?nome=${encodeURIComponent(nome)}&materia=${encodeURIComponent(materia)}`
+        );
 
+        if (!response.ok) {
+          throw new Error("Erro ao buscar professores");
+        }
+
+        const data = await response.json();
+
+        const professorHTML = `
+    <div class="professor">
+      <div><strong>ID:</strong> ${data.professor.id_professor}</div>
+      <div><strong>Nome:</strong> ${data.professor.nome}</div>
+      <div><strong>Matéria:</strong> ${data.professor.materia}</div>
+    </div>
+  `;
+
+        resultado.innerHTML = `
+    <div class="resultado">
+      <h2>Detalhes do Professor</h2>
+      ${professorHTML}
+    </div>
+  `;
+
+        // Atualizar a tabela de alunos (caso haja)
+        aluno.arrayAlunos = data.alunos.map((aluno) => {
+          return {
+            nome: aluno.nome,
+            idade: aluno.idade,
+            bimestre1: aluno.bimestre1,
+            bimestre2: aluno.bimestre2,
+            bimestre3: aluno.bimestre3,
+            bimestre4: aluno.bimestre4,
+            media: aluno.media,
+            serie: aluno.serie,
+          };
+        });
+        aluno.listaTabela(); // Atualizar a tabela de alunos
+
+        break;
+
+      case "novo":
+        if (!nome || !materia) {
+          resultado.innerHTML = `<p class="message error message-animate">Por favor, preencha os campos de nome e matéria.</p>`;
+          return;
+        }
+
+        // Envia dados para adicionar professor
+        response = await fetch("/professor", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ nome, materia }),
+        });
+
+        if (response.status === 409) {
+          resultado.innerHTML = `<p class="message error message-animate">Professor já adicionado.</p>`;
+        } else if (response.ok) {
+          resultado.innerHTML = `<p class="message success message-animate">Professor adicionado com sucesso.</p>`;
+        } else {
+          resultado.innerHTML = `<p class="message error message-animate">Erro ao adicionar professor.</p>`;
+        }
+
+        nomeInput.value = "";
+        materiaInput.value = "";
+        break;
+
+      case "excluir":
+        if (!nome || !materia) {
+          resultado.innerHTML = `<p class="message error message-animate">Por favor, preencha os campos de nome e matéria.</p>`;
+          return;
+        }
+
+        try {
+          // Primeira requisição para verificar se o professor existe
           response = await fetch(
-              `/professor?nome=${encodeURIComponent(nome)}&materia=${encodeURIComponent(materia)}`
+            `/professor?nome=${encodeURIComponent(nome)}&materia=${encodeURIComponent(materia)}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
           );
 
-          if (!response.ok) {
+          if (response.status === 404) {
+            resultado.innerHTML = `<p class="message error message-animate">Professor não encontrado.</p>`;
+          } else if (response.ok) {
+            // Professor encontrado, proceder com a exclusão
+            response = await fetch(`/professor`, {
+              method: "DELETE",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ nome, materia }),
+            });
+
+            if (response.ok) {
+              resultado.innerHTML = `<p class="message success message-animate">Professor excluído com sucesso.</p>`;
+            } else {
               const errorData = await response.json();
-              throw new Error(errorData.error || "Erro ao buscar professor");
-          }
-
-          const data = await response.json();
-
-          if (!data.professores || data.professores.length === 0) {
-              resultado.innerHTML = `
-                  <p class="message error message-animate">Professor inexistente.</p>
-              `;
+              resultado.innerHTML = `<p class="message error message-animate">Erro ao excluir professor: ${
+                errorData.erro || "Erro desconhecido."
+              }</p>`;
+            }
           } else {
-              const professores = data.professores.map((prof) => `
-                  <div class="professor">
-                      <div><strong>ID:</strong> ${prof.id}</div>
-                      <div><strong>Nome:</strong> ${prof.nome}</div>
-                      <div><strong>Matéria:</strong> ${prof.materia}</div>
-                  </div>
-              `).join("");
-
-              resultado.innerHTML = `
-                  <div class="resultado">
-                      <h2>Lista de Professores Encontrados</h2>
-                      ${professores}
-                  </div>
-              `;
+            resultado.innerHTML = `<p class="message error message-animate">Erro ao verificar o professor: ${response.statusText}</p>`;
           }
-          break;
+        } catch (err) {
+          resultado.innerHTML = `<p class="message error message-animate">Erro ao excluir professor: ${err.message}</p>`;
+          console.error("Erro ao excluir professor:", err);
+        }
 
-          case "novo":
-              if (!nome || !materia) {
-                  resultado.innerHTML = `
-                      <p class="message error message-animate">Por favor, preencha os campos de nome e matéria.</p>
-                  `;
-                  return;
-              }
+        nomeInput.value = "";
+        materiaInput.value = "";
+        break;
 
-              response = await fetch("/professor", {
-                  method: "POST",
-                  headers: {
-                      "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ nome, materia }),
-              });
+      case "atualizar":
+        if (!nome || !materia) {
+          resultado.innerHTML = `<p class="message error message-animate">Por favor, preencha os campos de nome e matéria.</p>`;
+          return;
+        }
 
-              if (response.status === 409) {
-                  resultado.innerHTML = `
-                      <p class="message error message-animate">Professor já adicionado.</p>
-                  `;
-              } else if (response.ok) {
-                  resultado.innerHTML = `
-                      <p class="message success message-animate">Professor adicionado com sucesso.</p>
-                  `;
-              } else {
-                  resultado.innerHTML = `
-                      <p class="message error message-animate">Erro ao adicionar professor.</p>
-                  `;
-              }
+        const newNome = window.prompt("Insira o novo nome do professor:", nome);
+        const newMateria = window.prompt(
+          "Insira a nova matéria do professor:",
+          materia
+        );
 
-              nomeInput.value = "";
-              materiaInput.value = "";
-              break;
+        if (!newNome || !newMateria) {
+          resultado.innerHTML = `<p class="message error message-animate">Atualização cancelada. Ambos os campos são obrigatórios.</p>`;
+          return;
+        }
 
-          case "excluir":
-              if (!nome || !materia) {
-                  resultado.innerHTML = `
-                      <p class="message error message-animate">Por favor, preencha os campos de nome e matéria.</p>
-                  `;
-                  return;
-              }
+        try {
+          response = await fetch("/professor", {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ nome, materia, newNome, newMateria }), // Enviando os dados corretos para o servidor
+          });
 
-              response = await fetch(`/professor`, {
-                  method: "DELETE",
-                  headers: {
-                      "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ nome, materia }),
-              });
-
-              if (response.ok) {
-                  resultado.innerHTML = `
-                      <p class="message success message-animate">Professor excluído com sucesso.</p>
-                  `;
-              } else {
-                  const errorData = await response.json();
-                  resultado.innerHTML = `
-                      <p class="message error message-animate">Erro ao excluir professor: ${errorData.message}</p>
-                  `;
-              }
-
-              nomeInput.value = "";
-              materiaInput.value = "";
-              break;
-
-          case "atualizar":
-              if (!nome || !materia) {
-                  resultado.innerHTML = `
-                      <p class="message error message-animate">Por favor, preencha os campos de nome e matéria.</p>
-                  `;
-                  return;
-              }
-
-              const newNome = window.prompt("Insira o novo nome do professor:", nome);
-              const newMateria = window.prompt("Insira a nova matéria do professor:", materia);
-
-              if (!newNome || !newMateria) {
-                  resultado.innerHTML = `
-                      <p class="message error message-animate">Atualização cancelada. Ambos os campos são obrigatórios.</p>
-                  `;
-                  return;
-              }
-
-              response = await fetch("/professor", {
-                  method: "PATCH",
-                  headers: {
-                      "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ nome, materia, newNome, newMateria }),
-              });
-
-              if (response.ok) {
-                  const data = await response.json();
-                  resultado.innerHTML = `
+          if (!response.ok) {
+            if (response.status === 404) {
+              resultado.innerHTML = `<p class="message error message-animate">Professor não encontrado.</p>`;
+            } else if (response.status === 400) {
+              resultado.innerHTML = `<p class="message error message-animate">Por favor, forneça todos os campos necessários: nome, materia, newNome, newMateria.</p>`;
+            } else {
+              throw new Error(`Erro na resposta: ${response.statusText}`);
+            }
+          } else {
+            const data = await response.json();
+            resultado.innerHTML = `
                       <p class="message success message-animate">${data.mensagem}</p>
                       <div class="professor">
                           <div><strong>Nome Atualizado:</strong> ${data.professor.nome}</div>
                           <div><strong>Matéria Atualizada:</strong> ${data.professor.materia}</div>
                       </div>
                   `;
-              } else {
-                  const errorData = await response.json();
-                  resultado.innerHTML = `
-                      <p class="message error message-animate">Erro ao atualizar professor: ${errorData.message}</p>
-                  `;
-              }
+          }
+        } catch (err) {
+          resultado.innerHTML = `<p class="message error message-animate">Erro ao realizar a ação: ${err.message}</p>`;
+          console.error("Erro ao realizar a ação:", err);
+        }
 
-              nomeInput.value = "";
-              materiaInput.value = "";
-              break;
+        nomeInput.value = "";
+        materiaInput.value = "";
+        break;
 
-          default:
-              resultado.innerHTML = `
-                  <p class="message error message-animate">Ação desconhecida.</p>
-              `;
-              break;
-      }
+      default:
+        resultado.innerHTML = `<p class="message error message-animate">Ação desconhecida.</p>`;
+        break;
+    }
   } catch (err) {
-      resultado.innerHTML = `
-          <p class="message error message-animate">Erro ao realizar a ação: ${err.message}</p>
-      `;
+    resultado.innerHTML = `<p class="message error message-animate">Erro ao realizar a ação: ${err.message}</p>`;
   }
 }
+
 
 class Aluno {
   constructor() {
@@ -181,56 +200,75 @@ class Aluno {
     this.id = 1;
   }
 
-  salvarAluno() {
+  async salvarAluno() {
     let aluno = this.lerDados();
+
     if (this.validaCampos(aluno)) {
-      this.adicionar(aluno);
+      // Enviar os dados para o backend
+      try {
+        const response = await fetch('http://localhost:3000/Aluno', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(aluno),
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          alert('Aluno cadastrado com sucesso!');
+          this.adicionar(aluno);
+          this.listaTabela();
+          this.cancelar();
+        } else {
+          alert('Erro ao cadastrar aluno: ' + result.mensagem);
+        }
+      } catch (error) {
+        console.error('Erro ao enviar dados do aluno:', error);
+        alert('Erro ao cadastrar aluno.');
+      }
     }
-    this.listaTabela();
-    this.cancelar();
   }
 
   lerDados() {
     let aluno = {};
     aluno.id = this.id;
-    aluno.nome = document.getElementById("nome").value.trim();
-    aluno.serie = document.getElementById("serie").value.trim();
-    aluno.bi1 = Number(document.getElementById("bi1").value);
-    aluno.bi2 = Number(document.getElementById("bi2").value);
-    aluno.bi3 = Number(document.getElementById("bi3").value);
-    aluno.bi4 = Number(document.getElementById("bi4").value);
-    aluno.idade = Number(document.getElementById("idade").value);
-    aluno.media = ((aluno.bi1 + aluno.bi2 + aluno.bi3 + aluno.bi4) / 4).toFixed(2);
-    console.log("Dados do aluno lidos: ", aluno);
+    aluno.nome = document.getElementById('nome').value.trim();
+    aluno.serie = Number(document.getElementById('serie').value);
+    aluno.bimestre1 = Number(document.getElementById('bimestre1').value);
+    aluno.bimestre2 = Number(document.getElementById('bimestre2').value);
+    aluno.bimestre3 = Number(document.getElementById('bimestre3').value);
+    aluno.bimestre4 = Number(document.getElementById('bimestre4').value);
+    aluno.idade = Number(document.getElementById('idade').value);
+    aluno.id_professor = document.getElementById('id_professor').value;
+    aluno.media = (
+      (aluno.bimestre1 + aluno.bimestre2 + aluno.bimestre3 + aluno.bimestre4) /
+      4
+    ).toFixed(2);
+
     return aluno;
   }
 
   validaCampos(aluno) {
-    let msg = "";
-    console.log("Validando campos do aluno: ", aluno);
+    let msg = '';
 
-    if (aluno.nome === "") {
-      msg += "- Informe o nome do aluno \n";
-    }
-    if (aluno.serie === "") {
-      msg += "- Informe a série do aluno \n";
-    }
-    if (isNaN(aluno.bi1) || aluno.bi1 < 0 || aluno.bi1 > 10) {
-      msg += "- Informe uma nota válida para B1 (0-10) \n";
-    }
-    if (isNaN(aluno.bi2) || aluno.bi2 < 0 || aluno.bi2 > 10) {
-      msg += "- Informe uma nota válida para B2 (0-10) \n";
-    }
-    if (isNaN(aluno.bi3) || aluno.bi3 < 0 || aluno.bi3 > 10) {
-      msg += "- Informe uma nota válida para B3 (0-10) \n";
-    }
-    if (isNaN(aluno.bi4) || aluno.bi4 < 0 || aluno.bi4 > 10) {
-      msg += "- Informe uma nota válida para B4 (0-10) \n";
-    }
-    if (isNaN(aluno.idade) || aluno.idade === "") {
-      msg += "- Informe a idade do aluno \n";
-    }
-    if (msg !== "") {
+    if (!aluno.nome) msg += '- Informe o nome do aluno \n';
+    if (!aluno.serie || aluno.serie < 1 || aluno.serie > 9)
+      msg += '- Informe uma série válida (1-9) \n';
+    if (isNaN(aluno.bimestre1) || aluno.bimestre1 < 0 || aluno.bimestre1 > 10)
+      msg += '- Informe uma nota válida para o 1º bimestre (0-10) \n';
+    if (isNaN(aluno.bimestre2) || aluno.bimestre2 < 0 || aluno.bimestre2 > 10)
+      msg += '- Informe uma nota válida para o 2º bimestre (0-10) \n';
+    if (isNaN(aluno.bimestre3) || aluno.bimestre3 < 0 || aluno.bimestre3 > 10)
+      msg += '- Informe uma nota válida para o 3º bimestre (0-10) \n';
+    if (isNaN(aluno.bimestre4) || aluno.bimestre4 < 0 || aluno.bimestre4 > 10)
+      msg += '- Informe uma nota válida para o 4º bimestre (0-10) \n';
+    if (isNaN(aluno.idade) || aluno.idade < 1 || aluno.idade > 100)
+      msg += '- Informe uma idade válida (1-100) \n';
+    if (!aluno.id_professor)
+      msg += '- Selecione um professor \n';
+
+    if (msg) {
       alert(msg);
       return false;
     }
@@ -239,88 +277,50 @@ class Aluno {
 
   adicionar(aluno) {
     this.arrayAlunos.push(aluno);
-    this.listaTabela();
     this.id++;
   }
 
   listaTabela() {
-    const tbody = document.getElementById("alunos-table-body");
-    tbody.innerHTML = "";
+    const tbody = document.getElementById('alunos-table-body');
+    tbody.innerHTML = '';
 
     this.arrayAlunos.forEach((aluno) => {
-      const { nome, serie, idade, bi1, bi2, bi3, bi4, media, id } = aluno;
+      const { nome, serie, idade, bimestre1, bimestre2, bimestre3, bimestre4, media } = aluno;
 
       const tr = tbody.insertRow();
       tr.innerHTML = `
-                <td class="nome">${nome}</td>
-                <td>${serie}</td>
-                <td class="idade">${idade}</td>
-                <td class="bi1">${bi1}</td>
-                <td class="bi2">${bi2}</td>
-                <td class="bi3">${bi3}</td>
-                <td class="bi4">${bi4}</td>
-                <td class="media">${media}</td>
-                <td>
-                    <button class="btn btn-edit btn-action">Editar</button>
-                    <button class="btn btn-delete btn-action">Excluir</button>
-                </td>
-            `;
+        <td>${nome}</td>
+        <td>${serie}</td>
+        <td>${idade}</td>
+        <td>${bimestre1}</td>
+        <td>${bimestre2}</td>
+        <td>${bimestre3}</td>
+        <td>${bimestre4}</td>
+        <td>${media}</td>
+        <td>
+          <button class="btn btn-edit">Editar</button>
+          <button class="btn btn-delete">Excluir</button>
+        </td>
+      `;
 
-      const [btnEdit, btnDelete] = tr.querySelectorAll(".btn");
-
-      btnEdit.addEventListener("click", () => this.editarAluno(aluno, tr));
-      btnDelete.addEventListener("click", () => this.deletarAluno(id));
+      tr.querySelector('.btn-edit').addEventListener('click', () =>
+        this.editarAluno(aluno, tr)
+      );
+      tr.querySelector('.btn-delete').addEventListener('click', () =>
+        this.deletarAluno(aluno.id)
+      );
     });
   }
 
   cancelar() {
-    const elementosParaLimpar = [
-      "nome",
-      "serie",
-      "bi1",
-      "bi2",
-      "bi3",
-      "bi4",
-      "idade",
-    ];
-
-    elementosParaLimpar.forEach((id) => {
-      document.getElementById(id).value = "";
+    const campos = ['nome', 'serie', 'bimestre1', 'bimestre2', 'bimestre3', 'bimestre4', 'idade', 'id_professor'];
+    campos.forEach((campo) => {
+      document.getElementById(campo).value = '';
     });
   }
 
   editarAluno(aluno, linha) {
-    document.getElementById("editNome").value = aluno.nome;
-    document.getElementById("editBi1").value = aluno.bi1;
-    document.getElementById("editBi2").value = aluno.bi2;
-    document.getElementById("editBi3").value = aluno.bi3;
-    document.getElementById("editBi4").value = aluno.bi4;
-
-    openEditModal();
-
-    const editForm = document.getElementById("editForm");
-    editForm.onsubmit = (event) => {
-      event.preventDefault();
-      aluno.nome = document.getElementById("editNome").value;
-      aluno.bi1 = Number(document.getElementById("editBi1").value);
-      aluno.bi2 = Number(document.getElementById("editBi2").value);
-      aluno.bi3 = Number(document.getElementById("editBi3").value);
-      aluno.bi4 = Number(document.getElementById("editBi4").value);
-
-      aluno.media = (
-        (aluno.bi1 + aluno.bi2 + aluno.bi3 + aluno.bi4) /
-        4
-      ).toFixed(2);
-
-      linha.querySelector(".nome").innerText = aluno.nome;
-      linha.querySelector(".bi1").innerText = aluno.bi1;
-      linha.querySelector(".bi2").innerText = aluno.bi2;
-      linha.querySelector(".bi3").innerText = aluno.bi3;
-      linha.querySelector(".bi4").innerText = aluno.bi4;
-      linha.querySelector(".media").innerText = aluno.media;
-
-      closeEditModal();
-    };
+    
   }
 
   deletarAluno(id) {
@@ -329,38 +329,65 @@ class Aluno {
   }
 }
 
-var aluno = new Aluno();
+const aluno = new Aluno();
 
-document
-  .getElementById("studentForm")
-  .addEventListener("submit", function (event) {
-    aluno.salvarAluno();
-    event.preventDefault();
-  });
-
-function openModal() {
-  const modal = document.getElementById("myModal");
-  modal.style.display = "block";
-}
-
-function closeModal() {
-  const modal = document.getElementById("myModal");
-  modal.style.display = "none";
-}
-
-document.getElementById("myModal").addEventListener("click", (event) => {
-  const modalContent = document.querySelector("#myModal .modal-content");
-  if (!modalContent.contains(event.target)) {
-    closeModal();
-  }
+document.getElementById('studentForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  aluno.salvarAluno();
 });
 
-function openEditModal() {
-  const editModal = document.getElementById("editModal");
-  editModal.style.display = "block";
+async function carregarProfessores() {
+  try {
+    const response = await fetch('http://localhost:3000/professor/todos');
+    const data = await response.json();
+    const professores = data.professores || [];
+    const professorSelect = document.getElementById('id_professor');
+
+    professores.forEach((professor) => {
+      const option = document.createElement('option');
+      option.value = professor.id_professor;
+      option.textContent = professor.nome;
+      professorSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Erro ao carregar professores:', error);
+  }
 }
 
-function closeEditModal() {
-  const editModal = document.getElementById("editModal");
-  editModal.style.display = "none";
+window.onload = carregarProfessores;
+
+
+function openModal() {
+  const modal = document.getElementById('myModal');
+  modal.style.display = 'block';
 }
+
+
+function closeModal() {
+  const modal = document.getElementById('myModal');
+  modal.style.display = 'none';
+}
+
+function openEditModal() {
+  const editModal = document.getElementById('editModal');
+  editModal.style.display = 'block';
+}
+
+
+function closeEditModal() {
+  const editModal = document.getElementById('editModal');
+  editModal.style.display = 'none';
+}
+
+
+window.onclick = function (event) {
+  const myModal = document.getElementById('myModal');
+  const editModal = document.getElementById('editModal');
+
+  if (event.target === myModal) closeModal();
+  if (event.target === editModal) closeEditModal();
+};
+
+document.getElementById('studentForm').addEventListener('click', openModal);
+
+
