@@ -25,65 +25,75 @@ const updateProfessorSchema = Joi.object({
 // Controladores
 exports.getProfessor = async (req, res) => {
     try {
-        // Validação de entrada
-        validateProfessorInput(req.query, professorSchema);
-
-        // Query para buscar o professor
-        const professorQuery = `SELECT * FROM professor WHERE nome = ? AND materia = ?`;
-        const professorResult = await mysql.execute(professorQuery, [req.query.nome, req.query.materia]);
-
-        if (professorResult.length === 0) {
-            return res.status(404).send({ mensagem: 'Professor não encontrado' });
+      // Validação de entrada
+      validateProfessorInput(req.query, professorSchema);
+  
+      // Query para buscar o professor
+      const professorQuery = `SELECT id_professor, nome, materia FROM professor WHERE nome = ? AND materia = ?`;
+      const professorResult = await mysql.execute(professorQuery, [req.query.nome, req.query.materia]);
+  
+      // Verificar se o professor existe
+      if (professorResult.length === 0) {
+        return res.status(404).send({ 
+          mensagem: 'Professor não encontrado', 
+          detalhes: `Não foi encontrado nenhum professor com nome '${req.query.nome}' e matéria '${req.query.materia}'.` 
+        });
+      }
+  
+      const professor = professorResult[0];
+  
+      // Query para buscar alunos associados ao professor
+      const alunosQuery = `
+        SELECT 
+            id_aluno, 
+            nome, 
+            idade, 
+            bimestre1, 
+            bimestre2, 
+            bimestre3, 
+            bimestre4, 
+            media, 
+            serie
+        FROM aluno
+        WHERE id_professor = ?`;
+      
+      const alunosResult = await mysql.execute(alunosQuery, [professor.id_professor]);
+  
+      // Construir a resposta com os dados do professor e seus alunos
+      const response = {
+        professor: {
+          id_professor: professor.id_professor,
+          nome: professor.nome,
+          materia: professor.materia
+        },
+        alunos: alunosResult.map(aluno => ({
+          id_aluno: aluno.id_aluno,
+          nome: aluno.nome,
+          idade: aluno.idade,
+          bimestre1: aluno.bimestre1,
+          bimestre2: aluno.bimestre2,
+          bimestre3: aluno.bimestre3,
+          bimestre4: aluno.bimestre4,
+          media: aluno.media,
+          serie: aluno.serie
+        })),
+        request: {
+          tipo: 'GET',
+          descricao: 'Puxar um professor e seus alunos'
         }
-
-        const professor = professorResult[0];
-
-        // Query para buscar alunos associados ao professor
-        const alunosQuery = `
-            SELECT 
-                a.nome AS aluno_nome, 
-                a.idade, 
-                a.bimestre1, 
-                a.bimestre2, 
-                a.bimestre3, 
-                a.bimestre4, 
-                a.media, 
-                a.serie
-            FROM aluno a
-            WHERE a.id_professor = ?`;
-        const alunosResult = await mysql.execute(alunosQuery, [professor.id_professor]);
-
-        // Construir a resposta com os dados do professor e seus alunos
-        const response = {
-            professor: {
-                id_professor: professor.id_professor,
-                nome: professor.nome,
-                materia: professor.materia
-            },
-            alunos: alunosResult.map(aluno => ({
-                nome: aluno.aluno_nome,
-                idade: aluno.idade,
-                bimestre1: aluno.bimestre1,
-                bimestre2: aluno.bimestre2,
-                bimestre3: aluno.bimestre3,
-                bimestre4: aluno.bimestre4,
-                media: aluno.media,
-                serie: aluno.serie
-            })),
-            request: {
-                tipo: 'GET',
-                descricao: 'Puxar um professor e seus alunos'
-            }
-        };
-
-        return res.status(200).send(response);
-
+      };
+  
+      return res.status(200).send(response);
+  
     } catch (error) {
-        return res.status(500).send({ erro: error.message });
+      // Captura de erros e envio de mensagem ao cliente
+      console.error("Erro ao buscar professor:", error);
+      return res.status(500).send({ 
+        erro: error.message || 'Erro interno do servidor' 
+      });
     }
-};
-
-
+  };
+  
 exports.postProfessor = async (req, res) => {
     try {
         // Validação de entrada
@@ -120,6 +130,8 @@ exports.postProfessor = async (req, res) => {
         return res.status(500).send({ erro: error.message });
     }
 };
+
+//Usando na section para mostrar os professores cadastrados 
 exports.getTodos = async (req, res) => {
     try {
         // Não é necessário a callback aqui, pois mysql.execute já é uma Promise
@@ -152,10 +164,19 @@ exports.patchProfessor = async (req, res) => {
     try {
         // Validação de entrada
         validateProfessorInput(req.body, updateProfessorSchema);
-
-        // Atualizar professor
-        const query = `UPDATE professor SET nome = ?, materia = ? WHERE nome = ? AND materia = ?`;
-        const result = await mysql.execute(query, [req.body.newNome, req.body.newMateria, req.body.nome, req.body.materia]);
+        const nomeNormalizado = req.body.nome.trim().toLowerCase();
+        const materiaNormalizada = req.body.materia.trim().toLowerCase();
+        const newNomeNormalizado = req.body.newNome.trim().toLowerCase();
+        const newMateriaNormalizada = req.body.newMateria.trim().toLowerCase();
+        
+        const query = `
+            UPDATE professor 
+            SET nome = ?, materia = ? 
+            WHERE nome = ? AND materia = ?;
+        `;
+        
+        const result = await mysql.execute(query, [newNomeNormalizado, newMateriaNormalizada, nomeNormalizado, materiaNormalizada]);
+        
 
         if (result.affectedRows === 0) {
             return res.status(404).send({ mensagem: 'Professor não encontrado' });

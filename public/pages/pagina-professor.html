@@ -37,7 +37,7 @@
                 <label></label>
                 <input type="" id="nomeProfessor" name="Nome" placeholder="Nome" class="input-text" />
                 <label></label>
-                <input type="" id="materia" name="Materia" placeholder="Materia" class="input-text"/>
+                <input type="" id="materia" name="Materia" placeholder="Materia" class="input-text" />
               </label>
 
             </form>
@@ -50,7 +50,7 @@
             </div>
 
             <div id="resultado"></div>
-            
+
           </div>
         </div>
         <div class="row">
@@ -73,114 +73,153 @@
       </div>
       <div id="myModal" class="modal">
         <div class="modal-content">
-            <div class="row">
-                <div class="col-8">
-                    <div class="row">
-                        <div class="col-12">
-                            <h2 class="title-modal">ADICIONAR NOVO ALUNO</h2>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <form id="studentForm" method="POST" action="http://localhost:3000/aluno">
-                                <label for="nome">Nome:</label>
-                                <input type="text" id="nome" name="nome" placeholder="Digite o seu nome" required />
-    
-                                <label for="serie">Série:</label>
-                                <input type="number" id="serie" name="serie" class="input-serie" placeholder="Digite sua série" min="1" max="9" required />
-    
-                                <label for="bi1">B1:</label>
-                                <input type="number" id="bimestre1" name="bimestre1" placeholder="Digite Nota do Bimestre 1" min="0" max="10" required />
-    
-                                <label for="bi3">B3:</label>
-                                <input type="number" id="bimestre3" name="bimestre3" placeholder="Digite Nota do Bimestre 3" min="0" max="10" required />
-    
-                                <label for="id_professor">Professor:</label>
-                                <select id="id_professor" name="id_professor" class="id_professor" required>
-                                    <option value="">Selecione o professor</option>
-                                    <!-- Os professores serão carregados aqui -->
-                                </select>
-                        </div>
-                        <div class="col-6">
-                            <label for="idade">Idade:</label>
-                            <input type="number" id="idade" name="idade" placeholder="Digite sua Idade" required />
-                            <div class="clear-float"></div> 
-    
-                            <label for="bi2">B2:</label>
-                            <input type="number" id="bimestre2" name="bimestre2" placeholder="Digite Nota do Bimestre 2" min="0" max="10" required />
-    
-                            <label for="bi4">B4:</label>
-                            <input type="number" id="bimestre4" name="bimestre4" placeholder="Digite Nota do Bimestre 4" min="0" max="10" required />
-    
-                            <div class="button-group">
-                                <button type="submit">Cadastrar</button>
-                            </div>
-                        </div>
-                    </div>
-                    </form>
-                </div>
-                <div class="col-4">
-                    <span class="close" onclick="closeModal()">&times;</span>
-                    <img src="../img/universitarios.jpg" id="img-aluno" alt="">
-                </div>
-            </div>
-        </div>
-    </div>
-      
-    
-   <div class="row">
-    <div class="col-4">
-      <div id="editModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeEditModal()">&times;</span>
-            <h2>Editar Aluno</h2>
-            <form id="editForm">
-                <label for="editNome">Nome:</label>
-                <input type="text" id="editNome" name="editNome" />
-                <label for="editBi1">B1:</label>
-                <input type="number" id="editBi1" name="editBi1" />
-                <label for="editBi2">B2:</label>
-                <input type="number" id="editBi2" name="editBi2" />
-                <label for="editBi3">B3:</label>
-                <input type="number" id="editBi3" name="editBi3" />
-                <label for="editBi4">B4:</label>
-                <input type="number" id="editBi4" name="editBi4" />
-                <button type="submit">Salvar</button>
-            </form>
-        </div>
-        <div class="col-6">
           <div class="row">
-            <div class="col-12">
-              <img src="../img/aluno.png" alt="">
+            <div class="col-8">
+              <div class="row">
+                <div class="col-12">
+                  <h2 class="title-modal">ADICIONAR NOVO ALUNO</h2>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <form id="studentForm" method="POST" action="http://localhost:3000/aluno">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite o seu nome" required />
+
+                    <label for="serie">Série:</label>
+                    <input type="number" id="serie" name="serie" class="input-serie" placeholder="Digite sua série"
+                      min="1" max="9" required />
+
+                    <label for="bi1">B1:</label>
+                    <input type="number" id="bimestre1" name="bimestre1" placeholder="Digite Nota do Bimestre 1" min="0"
+                      max="10" required />
+
+                    <label for="bi3">B3:</label>
+                    <input type="number" id="bimestre3" name="bimestre3" placeholder="Digite Nota do Bimestre 3" min="0"
+                      max="10" required />
+
+                    <label for="id_professor">Professor:</label>
+                    <select id="id_professor" name="id_professor" class="id_professor" required>
+                      <option value="">Selecione o professor</option>
+                      <!-- Os professores serão carregados aqui -->
+                    </select>
+
+                </div>
+                <div class="col-6">
+                  <label for="idade">Idade:</label>
+                  <input type="number" id="idade" name="idade" placeholder="Digite sua Idade" required />
+                  <div class="clear-float"></div>
+
+                  <label for="bi2">B2:</label>
+                  <input type="number" id="bimestre2" name="bimestre2" placeholder="Digite Nota do Bimestre 2" min="0"
+                    max="10" required />
+
+                  <label for="bi4">B4:</label>
+                  <input type="number" id="bimestre4" name="bimestre4" placeholder="Digite Nota do Bimestre 4" min="0"
+                    max="10" required />
+
+                  <div class="button-group">
+                    <button type="submit">Cadastrar</button>
+                  </div>
+                </div>
+              </div>
+              </form>
+            </div>
+            <div class="col-4">
+              <span class="close" onclick="closeModal()">&times;</span>
+              <img src="../img/universitarios.jpg" id="img-aluno" alt="">
             </div>
           </div>
         </div>
-    </div>
-    </div>
-   </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-4">
+          <div id="editModal" class="modal">
+            <div class="modal-content">
+              <div class="row">
+                <div class="col-8">
+                  <div class="row">
+                    <div class="col-12">
+                      <h2 class="title-modal">EDITAR ALUNO</h2>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-6">
+                      <form id="editForm" method="POST">
+                        <label for="editNome">Nome:</label>
+                        <input type="text" id="editNome" name="editNome" class="form-control"
+                          placeholder="Digite o nome do aluno" required />
+
+                        <label for="editSerie">Série:</label>
+                        <input type="number" id="editSerie" name="editSerie" class="input-serie"
+                          placeholder="Digite a série" min="1" max="9" required />
+
+                        <label for="editBi1">B1:</label>
+                        <input type="number" id="editBi1" name="editBi1" class="form-control"
+                          placeholder="Digite a nota do B1" min="0" max="10" required />
+
+                        <label for="editBi3">B3:</label>
+                        <input type="number" id="editBi3" name="editBi3" class="form-control"
+                          placeholder="Digite a nota do B3" min="0" max="10" required />
+
+                    </div>
+                    <div class="col-6">
+                      <label for="editIdade">Idade:</label>
+                      <input type="number" id="editIdade" name="editIdade" class="form-control"
+                        placeholder="Digite a idade do aluno" required />
+
+                      <div class="clear-float"></div>
+
+                      <label for="editBi2">B2:</label>
+                      <input type="number" id="editBi2" name="editBi2" class="form-control"
+                        placeholder="Digite a nota do B2" min="0" max="10" required />
+
+                      <label for="editBi4">B4:</label>
+                      <input type="number" id="editBi4" name="editBi4" class="form-control"
+                        placeholder="Digite a nota do B4" min="0" max="10" required />
+
+                      <div class="button-group">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <span class="close" onclick="closeEditModal()">&times;</span>
+                  <img src="../img/universitarios.jpg" id="img-aluno" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-12">
-          <div class="custom-table-container">
-              <table id="alunos-table" class="custom-table">
-                  <thead>
-                      <tr>
-                          <th>Nome</th>
-                          <th>Série</th>
-                          <th>Idade</th>
-                          <th id="bi1">B1</th>
-                          <th id="bi2">B2</th>
-                          <th id="bi3">B3</th>
-                          <th id="bi4">B4</th>
-                          <th>Media:</th>
-                      </tr>
-                  </thead>
-                  <tbody id="alunos-table-body">
-                  </tbody>
-              </table>
-          </div>
+        <div class="custom-table-container">
+          <table id="alunos-table" class="custom-table">
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Série</th>
+                <th>Idade</th>
+                <th id="bi1">B1</th>
+                <th id="bi2">B2</th>
+                <th id="bi3">B3</th>
+                <th id="bi4">B4</th>
+                <th>Media:</th>
+              </tr>
+            </thead>
+            <tbody id="alunos-table-body">
+            </tbody>
+          </table>
+        </div>
       </div>
-  </div>
+    </div>
 
   </div>
 

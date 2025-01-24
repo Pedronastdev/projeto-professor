@@ -3,6 +3,7 @@
   text-decoration: none;
   list-style: none;
 }
+
 .row {
   width: 100%;
   display: flex;
@@ -43,6 +44,20 @@
 .col-12 {
   width: 100%;
 }
+html, body {
+  height: 100%; /* Garantir que o corpo ocupe toda a altura da tela */
+  margin: 0; /* Remover margens padrão */
+  display: flex; /* Usar o flexbox para layout */
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center; /* Centraliza verticalmente */
+}
+
+.container {
+  width: 80%; /* Exemplo de largura para seu conteúdo */
+  max-width: 1200px; /* Largura máxima para o conteúdo */
+  text-align: center; /* Alinhar o texto ao centro */
+}
+
 .principal {
   width: 1440px;
   height: 1018px;
@@ -58,12 +73,12 @@
   letter-spacing: 3px;
   margin-left: 50px;
   font-size: 14px;
-  padding: 10px;
+  padding: 15px;
+  width: 137px;
   text-align: center;
-  margin-top: 100px;
+  margin-top: 94px;
   font-family: Arial, Helvetica, sans-serif;
 }
-
 .btn-yellow {
   width: 142px;
   height: 45px;

@@ -164,7 +164,8 @@ h2 {
 }
 .id_professor{
   margin-left: 40px;
-  height: 40px;;
+  height: 40px;
+  width: 310px;
 }
 .close {
     width: 60px;
@@ -208,7 +209,7 @@ button[type="submit"] {
   color: black;
   border: none;
   border-radius: 5px;
-  margin-top: 59px;
+  margin-top: 47px;
   cursor: pointer;
   margin-left: 40px;
 }
