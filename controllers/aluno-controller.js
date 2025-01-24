@@ -35,7 +35,6 @@ exports.postAluno = async (req, res, next) => {
   try {
     console.log("Dados recebidos no backend:", req.body);
 
-    // Validação dos campos
     const {
       nome,
       bimestre1,
@@ -97,7 +96,7 @@ exports.postAluno = async (req, res, next) => {
 
     console.log("Aluno inserido com sucesso, ID:", result.insertId);
 
-    // Construção da resposta
+
     const response = {
       mensagem: "Aluno criado com sucesso",
       alunoCriado: {
@@ -163,36 +162,35 @@ exports.getUmAluno = async (req, res, next) => {
 
 exports.patchAluno = async (req, res) => {
   try {
-      // Extraímos os dados da URL e do corpo da requisição
-      const { id_aluno } = req.params;  // ID do aluno vem da URL
+      
+      const { id_aluno } = req.params;  
       const { nome, bimestre1, bimestre2, bimestre3, bimestre4, serie, idade } = req.body;
 
-      // Verifica se os dados obrigatórios estão presentes
+
       if (!id_aluno || !nome || !serie) {
           return res.status(400).send({ mensagem: "Dados incompletos fornecidos." });
       }
 
-      // Calcula a média das notas
       const bimestres = [bimestre1, bimestre2, bimestre3, bimestre4];
       const media = bimestres.reduce((acc, nota) => acc + nota, 0) / bimestres.length;
 
-      // Atualiza o aluno no banco de dados com o ID recebido na URL
+
       const query = `
           UPDATE aluno 
           SET nome = ?, bimestre1 = ?, bimestre2 = ?, bimestre3 = ?, bimestre4 = ?, media = ?, serie = ?, idade = ? 
           WHERE id_aluno = ?`;
 
-      // Aqui estamos fazendo a execução da consulta SQL com os dados recebidos
+      
       const result = await mysql.execute(query, [
           nome, bimestre1, bimestre2, bimestre3, bimestre4, media, serie, idade, id_aluno
       ]);
 
-      // Verifica se a atualização afetou alguma linha no banco
+    
       if (result.affectedRows === 0) {
           return res.status(404).send({ mensagem: "Nenhum aluno encontrado com o ID fornecido." });
       }
 
-      // Resposta de sucesso, mostrando as informações do aluno atualizado
+
       const response = {
           mensagem: "Aluno atualizado com sucesso",
           alunoAtualizado: {
@@ -214,10 +212,9 @@ exports.patchAluno = async (req, res) => {
 
       return res.status(200).send(response);
   } catch (error) {
-      // Log de erro no servidor para ajudar a identificar o que deu errado
+      
       console.error("Erro ao atualizar aluno:", error);
 
-      // Retorna uma mensagem de erro clara para o cliente
       return res.status(500).send({
           mensagem: "Erro no servidor ao tentar atualizar o aluno.",
           error: error.message || error,
@@ -228,11 +225,10 @@ exports.patchAluno = async (req, res) => {
 
 exports.deleteAluno = async (req, res) => {
   try {
-    // Consulta para deletar o aluno, utilizando o id_aluno passado na URL
+
     const query = "DELETE FROM aluno WHERE id_aluno = ?";
     await mysql.execute(query, [req.params.id_aluno]);
 
-    // Se nenhum aluno for encontrado (affectedRows === 0), a exclusão não ocorreu
     const response = {
       mensagem: "Aluno removido com sucesso.",
     };

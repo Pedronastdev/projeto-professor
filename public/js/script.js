@@ -7,7 +7,7 @@ async function handleAction(action) {
   const materia = materiaInput.value.trim();
 
   try {
-    let response; // Mover a declaração da variável response para fora do switch
+    let response; 
 
     switch (action) {
       case "buscar":
@@ -25,7 +25,6 @@ async function handleAction(action) {
 
         const data = await response.json();
 
-        // Gerar o HTML para os detalhes do professor
         const professorHTML = `
             <div class="professor">
                 <div><strong>ID:</strong> ${data.professor.id_professor}</div>
@@ -34,7 +33,6 @@ async function handleAction(action) {
             </div>
         `;
 
-        // Atualizar o container de resultados
         resultado.innerHTML = `
             <div class="resultado">
                 <h2>Detalhes do Professor</h2>
@@ -55,7 +53,6 @@ async function handleAction(action) {
             id_aluno: aluno.id_aluno, // Importante para editar/excluir
         }));
 
-        // Atualizar a tabela de alunos na interface
         aluno.listaTabela();
     } catch (error) {
         // Lidar com erros na requisição
@@ -121,7 +118,7 @@ async function handleAction(action) {
           if (response.status === 404) {
             resultado.innerHTML = `<p class="message error message-animate">Professor não encontrado.</p>`;
           } else if (response.ok) {
-            // Professor encontrado, proceder com a exclusão
+            
             response = await fetch(`/professor`, {
               method: "DELETE",
               headers: {
@@ -331,8 +328,8 @@ class Aluno {
 
       tr.querySelector(".btn-edit").addEventListener("click", () => this.editarAluno(aluno, tr));
       tr.querySelector(".btn-delete").addEventListener("click", () => {
-        console.log(`Deletando aluno com ID: ${id_aluno}`); // Verificando o ID ao excluir
-        this.deletarAluno(id_aluno); // Passando o id_aluno para deletar corretamente
+        console.log(`Deletando aluno com ID: ${id_aluno}`); 
+        this.deletarAluno(id_aluno); 
       });
     });
   }
@@ -392,7 +389,6 @@ class Aluno {
   async editarAluno(aluno) {
     console.log(`Editando aluno com ID: ${aluno.id_aluno}`);
 
-    // Preenche os campos do formulário com os dados do aluno
     document.getElementById("editNome").value = aluno.nome || "";
     document.getElementById("editSerie").value = aluno.serie || ""; 
     document.getElementById("editBi1").value = aluno.bimestre1 || "";
@@ -401,13 +397,13 @@ class Aluno {
     document.getElementById("editBi4").value = aluno.bimestre4 || "";
     document.getElementById("editIdade").value = aluno.idade || ""; 
 
-    openEditModal(); // Abre o modal de edição
+    openEditModal(); 
 
-    // Define o comportamento do formulário de edição
+  
     document.getElementById("editForm").onsubmit = async (event) => {
-        event.preventDefault(); // Evita o comportamento padrão do formulário
+        event.preventDefault(); 
 
-        // Atualiza os dados do aluno com os valores do formulário
+       
         aluno.nome = document.getElementById("editNome").value.trim();
         aluno.serie = Number(document.getElementById("editSerie").value); 
         aluno.bimestre1 = Number(document.getElementById("editBi1").value);
@@ -420,7 +416,7 @@ class Aluno {
         aluno.media = ((aluno.bimestre1 + aluno.bimestre2 + aluno.bimestre3 + aluno.bimestre4) / 4).toFixed(2);
 
         try {
-            // Faz a requisição para atualizar o aluno
+          
             const response = await fetch(`http://localhost:3000/aluno/${aluno.id_aluno}`, {
                 method: "PATCH",
                 headers: {
@@ -434,24 +430,23 @@ class Aluno {
                     bimestre3: aluno.bimestre3,
                     bimestre4: aluno.bimestre4,
                     idade: aluno.idade,
-                    media: aluno.media, // Envia a média atualizada
+                    media: aluno.media,
                 }),
             });
 
             const result = await response.json();
 
             if (response.ok) {
-                // Atualiza o array local com a nova média
                 this.arrayAlunos = this.arrayAlunos.map((a) => 
                     a.id_aluno === aluno.id_aluno ? { ...a, ...aluno } : a
                 );
 
-                // Mostra mensagem de sucesso e atualiza a tabela
+               
                 alert(result.mensagem || "Aluno atualizado com sucesso.");
-                this.listaTabela(); // Atualiza a lista na tabela
-                closeEditModal(); // Fecha o modal de edição
+                this.listaTabela(); 
+                closeEditModal(); 
             } else {
-                // Mostra mensagem de erro específica
+           
                 alert(result.error || "Erro ao atualizar o aluno.");
             }
         } catch (error) {
@@ -471,7 +466,7 @@ document.getElementById("studentForm").addEventListener("submit", (event) => {
 
 async function carregarProfessores() {
   try {
-      // Faz a requisição para obter os professores
+
       const response = await fetch("http://localhost:3000/professor/todos");
       if (!response.ok) {
           throw new Error(`Erro ao carregar professores: ${response.statusText}`);
@@ -488,7 +483,6 @@ async function carregarProfessores() {
 
       console.log("Professores recebidos:", professores);
 
-      // Limpa as opções existentes
       professorSelect.innerHTML = '';
 
       // Adiciona as novas opções ao select

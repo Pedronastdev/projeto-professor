@@ -86,7 +86,7 @@ exports.getProfessor = async (req, res) => {
       return res.status(200).send(response);
   
     } catch (error) {
-      // Captura de erros e envio de mensagem ao cliente
+
       console.error("Erro ao buscar professor:", error);
       return res.status(500).send({ 
         erro: error.message || 'Erro interno do servidor' 
@@ -96,10 +96,9 @@ exports.getProfessor = async (req, res) => {
   
 exports.postProfessor = async (req, res) => {
     try {
-        // Validação de entrada
+
         validateProfessorInput(req.body, professorSchema);
 
-        // Verificar duplicidade
         const checkQuery = `SELECT * FROM professor WHERE nome = ? AND materia = ?`;
         const checkResult = await mysql.execute(checkQuery, [req.body.nome, req.body.materia]);
 
@@ -107,7 +106,6 @@ exports.postProfessor = async (req, res) => {
             return res.status(409).send({ mensagem: 'Professor já adicionado' });
         }
 
-        // Inserir professor
         const query = `INSERT INTO professor (nome, materia) VALUES (?, ?)`;
         const result = await mysql.execute(query, [req.body.nome, req.body.materia]);
 
@@ -131,18 +129,18 @@ exports.postProfessor = async (req, res) => {
     }
 };
 
-//Usando na section para mostrar os professores cadastrados 
+
 exports.getTodos = async (req, res) => {
     try {
-        // Não é necessário a callback aqui, pois mysql.execute já é uma Promise
+
         const results = await mysql.execute('SELECT * FROM professor');
 
-        // Caso não encontre professores
+
         if (results.length === 0) {
             return res.status(404).send({ mensagem: 'Nenhum professor encontrado' });
         }
 
-        // Estruturando a resposta
+
         const response = {
             professores: results.map(professor => {
                 return {
@@ -162,7 +160,7 @@ exports.getTodos = async (req, res) => {
 
 exports.patchProfessor = async (req, res) => {
     try {
-        // Validação de entrada
+
         validateProfessorInput(req.body, updateProfessorSchema);
         const nomeNormalizado = req.body.nome.trim().toLowerCase();
         const materiaNormalizada = req.body.materia.trim().toLowerCase();
@@ -206,7 +204,7 @@ exports.deleteProfessor = async (req, res) => {
   const { nome, materia } = req.body;
 
   try {
-      // Verificar se o professor existe antes de excluir
+
       const checkQuery = 'SELECT * FROM professor WHERE nome = ? AND materia = ?';
       const [result] = await mysql.execute(checkQuery, [nome, materia]);
 
@@ -218,7 +216,6 @@ exports.deleteProfessor = async (req, res) => {
       const deleteQuery = 'DELETE FROM professor WHERE nome = ? AND materia = ?';
       await mysql.execute(deleteQuery, [nome, materia]);
 
-      // Retornar sucesso
       return res.status(200).send({
           mensagem: 'Professor excluído com sucesso',
           request: {
