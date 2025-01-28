@@ -44,20 +44,6 @@
 .col-12 {
   width: 100%;
 }
-html, body {
-  height: 100%; /* Garantir que o corpo ocupe toda a altura da tela */
-  margin: 0; /* Remover margens padrão */
-  display: flex; /* Usar o flexbox para layout */
-  justify-content: center; /* Centraliza horizontalmente */
-  align-items: center; /* Centraliza verticalmente */
-}
-
-.container {
-  width: 80%; /* Exemplo de largura para seu conteúdo */
-  max-width: 1200px; /* Largura máxima para o conteúdo */
-  text-align: center; /* Alinhar o texto ao centro */
-}
-
 .principal {
   width: 1440px;
   height: 1018px;
