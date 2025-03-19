@@ -22,17 +22,13 @@ const updateProfessorSchema = Joi.object({
     newMateria: Joi.string().required(),
 });
 
-// Controladores
 exports.getProfessor = async (req, res) => {
     try {
-      // Validação de entrada
       validateProfessorInput(req.query, professorSchema);
-  
-      // Query para buscar o professor
+ 
       const professorQuery = `SELECT id_professor, nome, materia FROM professor WHERE nome = ? AND materia = ?`;
       const professorResult = await mysql.execute(professorQuery, [req.query.nome, req.query.materia]);
   
-      // Verificar se o professor existe
       if (professorResult.length === 0) {
         return res.status(404).send({ 
           mensagem: 'Professor não encontrado', 
@@ -42,7 +38,6 @@ exports.getProfessor = async (req, res) => {
   
       const professor = professorResult[0];
   
-      // Query para buscar alunos associados ao professor
       const alunosQuery = `
         SELECT 
             id_aluno, 
@@ -58,8 +53,7 @@ exports.getProfessor = async (req, res) => {
         WHERE id_professor = ?`;
       
       const alunosResult = await mysql.execute(alunosQuery, [professor.id_professor]);
-  
-      // Construir a resposta com os dados do professor e seus alunos
+      
       const response = {
         professor: {
           id_professor: professor.id_professor,
