@@ -79,8 +79,8 @@ exports.postAluno = async (req, res, next) => {
 
     // Inserção no banco
     const query = `
-            INSERT INTO aluno (nome, bimestre1, bimestre2, bimestre3, bimestre4, id_professor, serie, idade, media) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO aluno (nome, bimestre1, bimestre2, bimestre3, bimestre4, id_professor, serie, idade) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `;
     const result = await mysql.execute(query, [
       nome,
@@ -90,8 +90,7 @@ exports.postAluno = async (req, res, next) => {
       bimestre4,
       id_professor,
       serie,
-      idade,
-      media,
+      idade
     ]);
 
     console.log("Aluno inserido com sucesso, ID:", result.insertId);
