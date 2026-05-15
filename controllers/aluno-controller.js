@@ -176,12 +176,12 @@ exports.patchAluno = async (req, res) => {
 
       const query = `
           UPDATE aluno 
-          SET nome = ?, bimestre1 = ?, bimestre2 = ?, bimestre3 = ?, bimestre4 = ?, media = ?, serie = ?, idade = ? 
+          SET nome = ?, bimestre1 = ?, bimestre2 = ?, bimestre3 = ?, bimestre4 = ?, serie = ?, idade = ? 
           WHERE id_aluno = ?`;
 
       
       const result = await mysql.execute(query, [
-          nome, bimestre1, bimestre2, bimestre3, bimestre4, media, serie, idade, id_aluno
+          nome, bimestre1, bimestre2, bimestre3, bimestre4, serie, idade, id_aluno
       ]);
 
     

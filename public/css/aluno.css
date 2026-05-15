@@ -2,86 +2,91 @@
   box-sizing: border-box;
   text-decoration: none;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
+
 .row {
   width: 100%;
   display: flex;
-}
-.col-1 {
-  width: 8.33%;
-}
-.col-2 {
-  width: 16.66%;
-}
-.col-3 {
-  width: 25%;
-}
-.col-4 {
-  width: 33.33%;
-}
-.col-5 {
-  width: 41.66%;
-}
-.col-6 {
-  width: 50%;
-}
-.col-7 {
-  width: 58.33%;
-}
-.col-8 {
-  width: 66.66%;
-}
-.col-9 {
-  width: 75%;
-}
-.col-10 {
-  width: 83.33%;
-}
-.col-11 {
-  width: 91.66%;
-}
-.col-12 {
-  width: 100%;
-}
-.principal {
-  width: 1440px;
-  height: 1018px;
-  margin: 120px;
-}
-.input-text {
-  display: block;
-  margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
+.col-1  { width: 8.33%; }
+.col-2  { width: 16.66%; }
+.col-3  { width: 25%; }
+.col-4  { width: 33.33%; }
+.col-5  { width: 41.66%; }
+.col-6  { width: 50%; }
+.col-7  { width: 58.33%; }
+.col-8  { width: 66.66%; }
+.col-9  { width: 75%; }
+.col-10 { width: 83.33%; }
+.col-11 { width: 91.66%; }
+.col-12 { width: 100%; }
+
+/* =====================
+   CONTAINER PRINCIPAL
+===================== */
+.principal {
+  width: 100%;
+  max-width: 1440px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 40px 60px;
+}
+
+/* =====================
+   TÍTULO E PARÁGRAFO
+===================== */
 .title {
   font-family: Monofett;
-  font-size: 70px;
+  font-size: clamp(36px, 5vw, 70px);
   font-weight: 400;
-  line-height: 62px;
-  margin-left: 182px;
+  line-height: 1.1;
+  margin-left: 160px;
+  display: block;
 }
+
 .paragraph {
   font-family: Inter;
-  font-size: 22px;
+  font-size: clamp(16px, 2vw, 22px);
   font-weight: 600;
   line-height: 27px;
   letter-spacing: -0.05em;
-  margin-left: 180px;
+  margin-left: 160px;
   color: rgba(102, 102, 102, 1);
+  margin-top: 8px;
 }
+
+/* =====================
+   INPUTS
+===================== */
 .input-text {
-  margin-left: 155px;
-  width: 615px;
+  display: block;
+  margin-left: 160px;
+  width: clamp(260px, 60%, 615px);
   height: 57px;
   border-radius: 5px;
   color: black;
   border-style: solid;
   border-color: rgba(213, 215, 220, 1);
   padding: 16px;
+  margin-bottom: 10px;
+  font-size: 15px;
 }
+
+/* =====================
+   BOTÕES GERAIS
+===================== */
 .btn {
-  margin-left: 171px;
+  margin-left: 56px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
 }
+
 button {
   font-family: Inter;
   margin-top: 25px;
@@ -97,16 +102,22 @@ button {
   border: none;
   padding: 10px;
   margin-left: 14px;
+  cursor: pointer;
 }
+
+/* =====================
+   LISTA E NOVO ALUNO
+===================== */
 .list {
   font-family: Inter;
   font-size: 20px;
   font-weight: 600;
   line-height: 27px;
   letter-spacing: -0.02em;
-  margin-left: 168px;
+  margin-left: 160px;
   margin-top: 62px;
 }
+
 .new-student {
   font-family: Inter;
   font-size: 16px;
@@ -116,12 +127,27 @@ button {
   color: rgba(255, 255, 255, 1);
   margin-top: 55px;
 }
-.img-aluno{
-  width: 629px;
-  height: 538px;
+
+button.new-student {
+  text-align: center;
+  background-color: rgba(0, 176, 135, 1);
+}
+
+/* =====================
+   IMAGEM ALUNO
+===================== */
+.img-aluno {
+  width: 100%;
+  max-width: 629px;
+  height: auto;
   margin-top: 40px;
   margin-left: 37px;
+  display: block;
 }
+
+/* =====================
+   MODAL
+===================== */
 .modal {
   display: none;
   position: fixed;
@@ -133,16 +159,21 @@ button {
   overflow: auto;
   background-color: rgba(0, 0, 0, 0.4);
 }
+
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto;
+  margin: 5% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 1094px;
-  height: 773px;
+  width: 90%;
+  max-width: 1094px;
+  height: auto;
   border-radius: 10px;
-  background: transparent #fefefe;
 }
+
+/* =====================
+   LABELS E INPUTS DO MODAL
+===================== */
 label {
   display: block;
   font-size: 13px;
@@ -153,43 +184,50 @@ label {
   font-weight: bold;
   color: black;
 }
+
 h2 {
-    font-size: 40px;
-    font-family: "Plus Jakarta Sans";
-    color: rgb(24, 30, 75);
-    text-align: center;
-    margin-top: 62px;
-    line-height: 37.8px;
-    font-weight: 800;
+  font-size: clamp(22px, 3vw, 40px);
+  font-family: "Plus Jakarta Sans";
+  color: rgb(24, 30, 75);
+  text-align: center;
+  margin-top: 32px;
+  line-height: 1.2;
+  font-weight: 800;
 }
-.id_professor{
+
+.id_professor {
   margin-left: 40px;
   height: 40px;
-  width: 310px;
+  width: clamp(200px, 90%, 310px);
 }
+
 .close {
-    width: 60px;
-    height: 62px;
-    color: #ffffff;
-    float: right;
-    font-size: 55px;
-    font-weight: bold;
-    background-color: #f90000;
-    border-radius: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 2;
+  width: 50px;
+  height: 50px;
+  color: #ffffff;
+  float: right;
+  font-size: 40px;
+  font-weight: bold;
+  background-color: #f90000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 10px;
+  flex-shrink: 0;
 }
+
 .close:hover,
 .close:focus {
   text-decoration: none;
   cursor: pointer;
   transition: 1s;
 }
+
 input[type="text"],
 input[type="number"] {
-  width: 310px;
+  width: clamp(200px, 90%, 310px);
   background: #ffffff;
   border: 1px solid #d1d1d1;
   margin-bottom: 0px;
@@ -197,79 +235,71 @@ input[type="number"] {
   margin-left: 40px;
   display: block;
 }
+
 .clear-float {
   clear: both;
-  margin-top: 110px;
+  margin-top: 20px;
 }
+
 button[type="submit"] {
-  width: 310px;
+  width: clamp(200px, 90%, 310px);
   height: 45px;
   padding: 15px 20px;
-  background-color:#FEE774;
+  background-color: #FEE774;
   color: black;
   border: none;
   border-radius: 5px;
-  margin-top: 47px;
+  margin-top: 24px;
   cursor: pointer;
   margin-left: 40px;
 }
+
 .center {
   text-align: center;
 }
-button.new-student {
-  text-align: center;
-  background-color: rgba(0, 176, 135, 1);
-}
+
 #img-aluno {
-  width: 349px;
-  height: 300px;
-}
-.custom-table-container {
   width: 100%;
-  margin-top: 20px; 
-  overflow-x: auto; 
-  display: flex;
-  justify-content: center; 
-  align-items: center;   
+  max-width: 349px;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 48px;
 }
 
+/* =====================
+   TABELA
+===================== */
 .custom-table-container {
   width: 100%;
-  margin-top: 20px; 
-  overflow-x: auto; 
+  margin-top: 20px;
+  overflow-x: auto;
   display: flex;
-  justify-content: center; 
-  align-items: center;  
-}
-
-.custom-table-container {
-  width: 100%;
-  margin-top: 20px; 
-  overflow-x: auto; 
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
+  justify-content: center;
+  align-items: center;
 }
 
 .custom-table {
   width: 100%;
   border-collapse: collapse;
   background-color: transparent;
+  min-width: 500px;
 }
 
 .custom-table th {
-  padding: 5px;
+  padding: 10px 5px;
   text-align: center;
   color: #888;
   border-bottom: 1px solid #ccc;
-  margin-left: 10px; /* Margem à esquerda para os títulos das colunas */
+  font-size: clamp(12px, 1.5vw, 15px);
+  white-space: nowrap;
 }
 
 .custom-table td {
-  padding: 5px 45px;
+  padding: 8px 16px;
   text-align: center;
   border-bottom: 1px solid #ccc;
   color: black;
+  font-size: clamp(12px, 1.5vw, 14px);
 }
 
 .custom-table td.actions {
@@ -277,6 +307,8 @@ button.new-student {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
 }
 
 .custom-table td.actions button {
@@ -284,12 +316,12 @@ button.new-student {
 }
 
 .btn-action {
-  width: 125px;
+  width: 110px;
   cursor: pointer;
-  padding: 6px 12px;
+  padding: 6px 10px;
   border: none;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
   margin-left: 5px;
 }
 
@@ -299,40 +331,31 @@ button.new-student {
 }
 
 .btn-edit-notes {
-  background-color: #007bff; /* Azul */
+  background-color: #007bff;
   color: #fff;
 }
 
 .btn-delete {
-  background-color: #dc3545; /* Vermelho */
+  background-color: #dc3545;
   color: #fff;
 }
 
 .btn-action:hover {
-  background-color: rgba(0, 0, 0, 0.1); /* Cor de fundo ao passar o mouse */
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
-.professor {
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin-bottom: 10px;
-}
-
-.request {
-  margin-top: 5px;
-  padding-top: 5px;
-  border-top: 1px solid #ccc;
-}
-
+/* =====================
+   MENSAGENS
+===================== */
 .resultado {
   margin-top: 20px;
-  margin-left: 190px;
+  margin-left: 160px;
 }
-/* Mensagens de erro e sucesso */
+
 .message {
-  font-size: 20px;
+  font-size: clamp(14px, 2vw, 20px);
   font-weight: bold;
-  margin-left: 190px;
+  margin-left: 160px;
   padding: 10px;
   border-radius: 5px;
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -362,4 +385,237 @@ button.new-student {
 
 .message-animate {
   animation: fadeIn 0.5s ease-out;
+}
+
+.professor {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.request {
+  margin-top: 5px;
+  padding-top: 5px;
+  border-top: 1px solid #ccc;
+}
+
+/* =====================
+   TABLET (≤ 1100px)
+===================== */
+@media (max-width: 1100px) {
+  .principal {
+    padding: 32px 32px;
+  }
+
+  .title {
+    margin-left: 60px;
+    font-size: clamp(32px, 5vw, 56px);
+  }
+
+  .paragraph {
+    margin-left: 60px;
+  }
+
+  .input-text {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+  }
+
+  .btn {
+    margin-left: 60px;
+  }
+
+  .list {
+    margin-left: 60px;
+  }
+
+  .resultado,
+  .message {
+    margin-left: 60px;
+  }
+}
+
+/* =====================
+   MOBILE (≤ 768px)
+===================== */
+@media (max-width: 768px) {
+  .principal {
+    padding: 20px 16px;
+  }
+
+  /* Empilha as colunas principais */
+  .col-5,
+  .col-7 {
+    width: 100%;
+  }
+
+  /* Imagem vai abaixo do conteúdo */
+  .principal > .row > .col-5 {
+    order: 2;
+  }
+
+  .principal > .row > .col-7 {
+    order: 1;
+  }
+
+  /* Título centralizado */
+  .title {
+    margin-left: 0;
+    text-align: center;
+    font-size: clamp(28px, 10vw, 48px);
+  }
+
+  .paragraph {
+    margin-left: 0;
+    text-align: center;
+    font-size: 15px;
+    margin-top: 8px;
+  }
+
+  /* Inputs centralizados */
+  .input-text {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Botões */
+  .btn {
+    margin-left: 0;
+    justify-content: center;
+  }
+
+  button {
+    margin-left: 0;
+    width: 130px;
+    font-size: 13px;
+  }
+
+  /* Lista e novo aluno */
+  .list {
+    margin-left: 0;
+    text-align: center;
+    margin-top: 32px;
+  }
+
+  .new-student {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Imagem */
+  .img-aluno {
+    margin: 24px auto 0;
+    max-width: 320px;
+    width: 85%;
+  }
+
+  /* Modal fullscreen no mobile */
+  .modal-content {
+    margin: 2% auto;
+    width: 95%;
+    padding: 16px;
+  }
+
+  /* Empilha as colunas do modal */
+  .modal-content .col-8,
+  .modal-content .col-6,
+  .modal-content .col-4 {
+    width: 100%;
+  }
+
+  .modal-content .col-4 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .close {
+    float: none;
+    margin: 0 0 12px auto;
+  }
+
+  #img-aluno {
+    max-width: 220px;
+    margin-top: 16px;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    width: calc(100% - 40px);
+    max-width: 100%;
+  }
+
+  .id_professor {
+    width: calc(100% - 40px);
+  }
+
+  button[type="submit"] {
+    width: calc(100% - 40px);
+  }
+
+  .clear-float {
+    margin-top: 0;
+  }
+
+  /* Mensagens */
+  .resultado,
+  .message {
+    margin-left: 0;
+  }
+
+  /* Tabela scroll horizontal */
+  .custom-table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .custom-table {
+    min-width: 480px;
+  }
+
+  .btn-action {
+    width: 90px;
+    font-size: 11px;
+    padding: 5px 6px;
+  }
+}
+
+/* =====================
+   MOBILE PEQUENO (≤ 480px)
+===================== */
+@media (max-width: 480px) {
+  .title {
+    font-size: 28px;
+  }
+
+  button {
+    width: 110px;
+    font-size: 12px;
+    height: 44px;
+  }
+
+  .list {
+    font-size: 17px;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .custom-table th,
+  .custom-table td {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+
+  .btn-action {
+    width: 80px;
+    font-size: 10px;
+  }
 }
