@@ -25,9 +25,7 @@
 .col-11 { width: 91.66%; }
 .col-12 { width: 100%; }
 
-/* =====================
-   CONTAINER PRINCIPAL
-===================== */
+
 .principal {
   width: 100%;
   max-width: 1440px;
@@ -36,9 +34,7 @@
   padding: 40px 60px;
 }
 
-/* =====================
-   TÍTULO E PARÁGRAFO
-===================== */
+
 .title {
   font-family: Monofett;
   font-size: clamp(36px, 5vw, 70px);
@@ -59,9 +55,7 @@
   margin-top: 8px;
 }
 
-/* =====================
-   INPUTS
-===================== */
+
 .input-text {
   display: block;
   margin-left: 160px;
@@ -76,9 +70,6 @@
   font-size: 15px;
 }
 
-/* =====================
-   BOTÕES GERAIS
-===================== */
 .btn {
   margin-left: 56px;
   display: flex;
@@ -105,9 +96,6 @@ button {
   cursor: pointer;
 }
 
-/* =====================
-   LISTA E NOVO ALUNO
-===================== */
 .list {
   font-family: Inter;
   font-size: 20px;
@@ -133,9 +121,7 @@ button.new-student {
   background-color: rgba(0, 176, 135, 1);
 }
 
-/* =====================
-   IMAGEM ALUNO
-===================== */
+
 .img-aluno {
   width: 100%;
   max-width: 629px;
@@ -145,9 +131,6 @@ button.new-student {
   display: block;
 }
 
-/* =====================
-   MODAL
-===================== */
 .modal {
   display: none;
   position: fixed;
@@ -171,9 +154,6 @@ button.new-student {
   border-radius: 10px;
 }
 
-/* =====================
-   LABELS E INPUTS DO MODAL
-===================== */
 label {
   display: block;
   font-size: 13px;
@@ -266,9 +246,6 @@ button[type="submit"] {
   margin-top: 48px;
 }
 
-/* =====================
-   TABELA
-===================== */
 .custom-table-container {
   width: 100%;
   margin-top: 20px;
@@ -344,9 +321,6 @@ button[type="submit"] {
   background-color: rgba(0, 0, 0, 0.1);
 }
 
-/* =====================
-   MENSAGENS
-===================== */
 .resultado {
   margin-top: 20px;
   margin-left: 160px;
@@ -399,9 +373,6 @@ button[type="submit"] {
   border-top: 1px solid #ccc;
 }
 
-/* =====================
-   TABLET (≤ 1100px)
-===================== */
 @media (max-width: 1100px) {
   .principal {
     padding: 32px 32px;
@@ -435,21 +406,16 @@ button[type="submit"] {
   }
 }
 
-/* =====================
-   MOBILE (≤ 768px)
-===================== */
 @media (max-width: 768px) {
   .principal {
     padding: 20px 16px;
   }
 
-  /* Empilha as colunas principais */
   .col-5,
   .col-7 {
     width: 100%;
   }
 
-  /* Imagem vai abaixo do conteúdo */
   .principal > .row > .col-5 {
     order: 2;
   }
@@ -458,7 +424,6 @@ button[type="submit"] {
     order: 1;
   }
 
-  /* Título centralizado */
   .title {
     margin-left: 0;
     text-align: center;
@@ -472,7 +437,6 @@ button[type="submit"] {
     margin-top: 8px;
   }
 
-  /* Inputs centralizados */
   .input-text {
     margin-left: auto;
     margin-right: auto;
@@ -480,7 +444,6 @@ button[type="submit"] {
     max-width: 100%;
   }
 
-  /* Botões */
   .btn {
     margin-left: 0;
     justify-content: center;
@@ -492,7 +455,6 @@ button[type="submit"] {
     font-size: 13px;
   }
 
-  /* Lista e novo aluno */
   .list {
     margin-left: 0;
     text-align: center;
@@ -508,21 +470,18 @@ button[type="submit"] {
     margin-right: auto;
   }
 
-  /* Imagem */
   .img-aluno {
     margin: 24px auto 0;
     max-width: 320px;
     width: 85%;
   }
 
-  /* Modal fullscreen no mobile */
   .modal-content {
     margin: 2% auto;
     width: 95%;
     padding: 16px;
   }
 
-  /* Empilha as colunas do modal */
   .modal-content .col-8,
   .modal-content .col-6,
   .modal-content .col-4 {
@@ -563,13 +522,11 @@ button[type="submit"] {
     margin-top: 0;
   }
 
-  /* Mensagens */
   .resultado,
   .message {
     margin-left: 0;
   }
 
-  /* Tabela scroll horizontal */
   .custom-table-container {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -586,9 +543,6 @@ button[type="submit"] {
   }
 }
 
-/* =====================
-   MOBILE PEQUENO (≤ 480px)
-===================== */
 @media (max-width: 480px) {
   .title {
     font-size: 28px;
@@ -618,4 +572,49 @@ button[type="submit"] {
     width: 80px;
     font-size: 10px;
   }
+}
+
+.custom-notify {
+
+  position: fixed;
+
+  top: 20px;
+  right: -400px;
+
+  padding: 16px 25px;
+
+  border-radius: 12px;
+
+  color: white;
+
+  font-weight: bold;
+
+  font-family: Arial;
+
+  z-index: 9999;
+
+  transition: 0.5s;
+
+  box-shadow:
+    0 4px 15px rgba(0,0,0,0.2);
+}
+
+.custom-notify.show {
+
+  right: 20px;
+}
+
+.custom-notify.success {
+
+  background: #10b981;
+}
+
+.custom-notify.error {
+
+  background: #ef4444;
+}
+
+.custom-notify.warning {
+
+  background: #f59e0b;
 }

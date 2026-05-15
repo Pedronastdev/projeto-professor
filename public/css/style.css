@@ -251,7 +251,6 @@
     line-height: 1.7;
   }
 
-  /* Row do link e botão empilha */
   .principal > .row > .col-7 .row:last-child {
     flex-direction: column;
     align-items: center;
@@ -278,7 +277,6 @@
   }
 }
 
-/* MOBILE PEQUENO */
 @media (max-width: 480px) {
   .principal {
     padding: 0 16px;
